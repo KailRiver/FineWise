@@ -28,14 +28,22 @@ public class AuthService {
             System.out.println("Неверный логин или пароль.");
             return false;
         }
+        // Загрузка данных кошелька из файла
+        user.setWallet(FileStorage.loadWalletFromFile(login));
         currentUser = user;
         System.out.println("Пользователь успешно авторизован.");
         return true;
     }
 
     public void logout() {
-        currentUser = null;
-        System.out.println("Выход выполнен.");
+        if (currentUser != null) {
+            // Сохранение данных кошелька в файл
+            FileStorage.saveWalletToFile(currentUser);
+            currentUser = null;
+            System.out.println("Выход выполнен.");
+        } else {
+            System.out.println("Пользователь не авторизован.");
+        }
     }
 
     public User getCurrentUser() {

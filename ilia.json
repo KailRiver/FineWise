@@ -1,0 +1,12 @@
+{
+  "balance": 10000.0,
+  "transactions": [
+    {
+      "type": "income",
+      "category": "salary",
+      "amount": 10000.0,
+      "date": "current_date"
+    }
+  ],
+  "budgets": {}
+}

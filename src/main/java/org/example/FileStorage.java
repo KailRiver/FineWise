@@ -3,8 +3,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
 
 public class FileStorage {
     private static final String FILE_EXTENSION = ".json";
