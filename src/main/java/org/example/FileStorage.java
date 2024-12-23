@@ -1,12 +1,16 @@
 package org.example;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.time.LocalDate;
 
 import java.io.*;
 
 public class FileStorage {
     private static final String FILE_EXTENSION = ".json";
-    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson gson = new GsonBuilder()
+            .setPrettyPrinting()
+            .registerTypeAdapter(LocalDate.class, new LocalDateAdapter()) // Регистрируем адаптер
+            .create();
 
     // Сохранение данных кошелька пользователя в файл
     public static void saveWalletToFile(User user) {
@@ -23,7 +27,7 @@ public class FileStorage {
 
     // Загрузка данных кошелька пользователя из файла
     public static Wallet loadWalletFromFile(String login) {
-        String fileName = login + FILE_EXTENSION;
+        String fileName = login + ".json";
         try (Reader reader = new FileReader(fileName)) {
             Wallet wallet = gson.fromJson(reader, Wallet.class);
             System.out.println("Данные кошелька загружены из файла: " + fileName);

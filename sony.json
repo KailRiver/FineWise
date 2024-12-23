@@ -1,10 +1,16 @@
 {
-  "balance": 10000.0,
+  "balance": 5000.0,
   "transactions": [
     {
       "type": "income",
       "category": "salary",
       "amount": 10000.0,
+      "date": "2024-12-23"
+    },
+    {
+      "type": "expense",
+      "category": "Перевод",
+      "amount": 5000.0,
       "date": "2024-12-23"
     }
   ],

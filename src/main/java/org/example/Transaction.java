@@ -1,15 +1,18 @@
 package org.example;
+
+import java.time.LocalDate;
+
 public class Transaction {
     private String type; // "income" или "expense"
     private String category;
     private double amount;
-    private String date;
+    private LocalDate date;
 
-    public Transaction(String type, String category, double amount, String date) {
+    public Transaction(String type, String category, double amount) {
         this.type = type;
         this.category = category;
         this.amount = amount;
-        this.date = date;
+        this.date = LocalDate.now(); // Устанавливаем текущую дату
     }
 
     // Геттеры
@@ -25,7 +28,7 @@ public class Transaction {
         return amount;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 }

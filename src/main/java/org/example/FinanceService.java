@@ -11,7 +11,7 @@ public class FinanceService {
         this.notificationService = new NotificationService();
     }
 
-    // Добавление дохода
+    // Метод для добавления дохода
     public void addIncome(double amount, String category) {
         User currentUser = authService.getCurrentUser();
         if (currentUser == null) {
@@ -24,12 +24,11 @@ public class FinanceService {
             return;
         }
 
-        Transaction transaction = new Transaction("income", category, amount, "current_date");
+        Transaction transaction = new Transaction("income", category, amount); // Убрали "current_date"
         currentUser.getWallet().addTransaction(transaction);
         System.out.println("Доход в размере " + amount + " добавлен в категорию " + category);
     }
 
-    // Добавление расхода
     public void addExpense(double amount, String category) {
         User currentUser = authService.getCurrentUser();
         if (currentUser == null) {
@@ -47,7 +46,7 @@ public class FinanceService {
             return;
         }
 
-        Transaction transaction = new Transaction("expense", category, amount, "current_date");
+        Transaction transaction = new Transaction("expense", category, amount); // Убрали "current_date"
         currentUser.getWallet().addTransaction(transaction);
         System.out.println("Расход в размере " + amount + " добавлен в категорию " + category);
 
@@ -59,24 +58,6 @@ public class FinanceService {
         notificationService.notifyBalanceNegative(currentUser.getWallet().getBalance());
     }
 
-    // Установка бюджета для категории
-    public void setBudget(String category, double budget) {
-        User currentUser = authService.getCurrentUser();
-        if (currentUser == null) {
-            System.out.println("Пожалуйста, авторизуйтесь.");
-            return;
-        }
-
-        // Валидация суммы
-        if (!validationService.validateAmount(budget)) {
-            return;
-        }
-
-        currentUser.getWallet().setBudget(category, budget);
-        System.out.println("Бюджет для категории " + category + " установлен в размере " + budget);
-    }
-
-    // Перевод денег другому пользователю
     public void transferMoney(String toUser, double amount) {
         User currentUser = authService.getCurrentUser();
         if (currentUser == null) {
@@ -103,13 +84,13 @@ public class FinanceService {
         }
 
         // Выполнение перевода
-        currentUser.getWallet().addTransaction(new Transaction("expense", "Перевод", amount, "current_date"));
-        recipient.getWallet().addTransaction(new Transaction("income", "Перевод", amount, "current_date"));
+        currentUser.getWallet().addTransaction(new Transaction("expense", "Перевод", amount)); // Убрали "current_date"
+        recipient.getWallet().addTransaction(new Transaction("income", "Перевод", amount)); // Убрали "current_date"
 
         System.out.println("Перевод в размере " + amount + " выполнен пользователю " + toUser);
     }
 
-    // Вывод статистики
+    // Метод для вывода статистики
     public void showStats() {
         User currentUser = authService.getCurrentUser();
         if (currentUser == null) {
@@ -118,5 +99,20 @@ public class FinanceService {
         }
 
         currentUser.getWallet().showStats();
+    }
+    public void setBudget(String category, double budget) {
+        User currentUser = authService.getCurrentUser();
+        if (currentUser == null) {
+            System.out.println("Пожалуйста, авторизуйтесь.");
+            return;
+        }
+
+        // Валидация суммы
+        if (!validationService.validateAmount(budget)) {
+            return;
+        }
+
+        currentUser.getWallet().setBudget(category, budget);
+        System.out.println("Бюджет для категории " + category + " установлен в размере " + budget);
     }
 }
