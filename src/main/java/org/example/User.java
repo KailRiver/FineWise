@@ -1,8 +1,12 @@
 package org.example;
+
 public class User {
     private String login;
     private String password;
     private Wallet wallet;
+
+    // Пустой конструктор для Jackson
+    public User() {}
 
     public User(String login, String password) {
         this.login = login;
@@ -15,8 +19,16 @@ public class User {
         return login;
     }
 
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Wallet getWallet() {

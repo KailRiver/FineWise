@@ -8,6 +8,9 @@ public class Transaction {
     private double amount;
     private LocalDate date;
 
+    // Пустой конструктор для Jackson
+    public Transaction() {}
+
     public Transaction(String type, String category, double amount) {
         this.type = type;
         this.category = category;
@@ -15,7 +18,7 @@ public class Transaction {
         this.date = LocalDate.now(); // Устанавливаем текущую дату
     }
 
-    // Геттеры
+    // Геттеры и сеттеры
     public String getType() {
         return type;
     }
@@ -30,5 +33,21 @@ public class Transaction {
 
     public LocalDate getDate() {
         return date;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 }

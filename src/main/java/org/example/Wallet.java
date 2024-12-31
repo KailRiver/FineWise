@@ -1,4 +1,5 @@
 package org.example;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +10,7 @@ public class Wallet {
     private List<Transaction> transactions; // Список всех транзакций
     private Map<String, Category> budgets; // Бюджеты по категориям
 
+    // Пустой конструктор для Jackson
     public Wallet() {
         this.balance = 0;
         this.transactions = new ArrayList<>();
@@ -24,7 +26,9 @@ public class Wallet {
             balance -= transaction.getAmount();
             // Увеличиваем расходы в соответствующей категории
             if (budgets.containsKey(transaction.getCategory())) {
-                budgets.get(transaction.getCategory()).addExpense(transaction.getAmount());
+                budgets.get(transaction.getCategory()).setExpenses(
+                        budgets.get(transaction.getCategory()).getExpenses() + transaction.getAmount()
+                );
             }
         }
     }

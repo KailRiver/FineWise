@@ -13,16 +13,21 @@ public class AuthService {
     }
 
     public void registerUser(String login, String password) {
-        if (users.containsKey(login)) {
-            System.out.println("Пользователь с таким логином уже существует.");
+        // Проверяем, существует ли файл с данными для пользователя
+        File userFile = new File(login + ".json");
+        if (userFile.exists()) {
+            System.out.println("Пользователь с логином " + login + " уже зарегистрирован.");
+            System.out.println("Пожалуйста, войдите в систему с помощью команды 'login'.");
             return;
         }
+
+        // Регистрируем нового пользователя
         User newUser = new User(login, password);
         users.put(login, newUser);
         System.out.println("Пользователь успешно зарегистрирован.");
 
         // Сохраняем данные пользователя в файл
-        FileStorage.saveWalletToFile(newUser);
+        FileStorage.saveUserToFile(newUser);
     }
 
     public boolean loginUser(String login, String password) {
@@ -30,19 +35,18 @@ public class AuthService {
         File userFile = new File(login + ".json");
         if (!userFile.exists()) {
             System.out.println("Пользователь с логином " + login + " не зарегистрирован.");
-            System.out.println("Пожалуйста, проверьте данные на корректность или зарегистрируйте нового пользователя.");
+            System.out.println("Пожалуйста, зарегистрируйтесь с помощью команды 'register'.");
             return false;
         }
 
-        // Проверяем, существует ли пользователь в списке зарегистрированных пользователей
-        User user = users.get(login);
+        // Загружаем данные пользователя из файла
+        User user = FileStorage.loadUserFromFile(login);
         if (user == null || !user.getPassword().equals(password)) {
             System.out.println("Неверный логин или пароль.");
             return false;
         }
 
-        // Загрузка данных кошелька из файла
-        user.setWallet(FileStorage.loadWalletFromFile(login));
+        // Устанавливаем текущего пользователя
         currentUser = user;
         System.out.println("Пользователь успешно авторизован.");
         return true;
@@ -51,7 +55,7 @@ public class AuthService {
     public void logout() {
         if (currentUser != null) {
             // Сохранение данных кошелька в файл
-            FileStorage.saveWalletToFile(currentUser);
+            FileStorage.saveUserToFile(currentUser);
             currentUser = null;
             System.out.println("Выход выполнен.");
         } else {

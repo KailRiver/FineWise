@@ -24,7 +24,7 @@ public class FinanceService {
             return;
         }
 
-        Transaction transaction = new Transaction("income", category, amount); // Убрали "current_date"
+        Transaction transaction = new Transaction("income", category, amount);
         currentUser.getWallet().addTransaction(transaction);
         System.out.println("Доход в размере " + amount + " добавлен в категорию " + category);
     }
@@ -46,7 +46,7 @@ public class FinanceService {
             return;
         }
 
-        Transaction transaction = new Transaction("expense", category, amount); // Убрали "current_date"
+        Transaction transaction = new Transaction("expense", category, amount);
         currentUser.getWallet().addTransaction(transaction);
         System.out.println("Расход в размере " + amount + " добавлен в категорию " + category);
 
@@ -84,8 +84,8 @@ public class FinanceService {
         }
 
         // Выполнение перевода
-        currentUser.getWallet().addTransaction(new Transaction("expense", "Перевод", amount)); // Убрали "current_date"
-        recipient.getWallet().addTransaction(new Transaction("income", "Перевод", amount)); // Убрали "current_date"
+        currentUser.getWallet().addTransaction(new Transaction("expense", "Перевод", amount));
+        recipient.getWallet().addTransaction(new Transaction("income", "Перевод", amount));
 
         System.out.println("Перевод в размере " + amount + " выполнен пользователю " + toUser);
     }

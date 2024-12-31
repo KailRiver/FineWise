@@ -1,12 +1,1 @@
-{
-  "balance": 10000.0,
-  "transactions": [
-    {
-      "type": "income",
-      "category": "salary",
-      "amount": 10000.0,
-      "date": "2024-12-23"
-    }
-  ],
-  "budgets": {}
-}
+{"login":"ilia","password":"12345","wallet":{"balance":10000.0,"transactions":[{"type":"income","category":"salary","amount":10000.0,"date":[2024,12,31]}],"budgets":{}}}

@@ -1,42 +1,37 @@
 package org.example;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.time.LocalDate;
 
-import java.io.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import java.io.File;
+import java.io.IOException;
 
 public class FileStorage {
     private static final String FILE_EXTENSION = ".json";
-    private static final Gson gson = new GsonBuilder()
-            .setPrettyPrinting()
-            .registerTypeAdapter(LocalDate.class, new LocalDateAdapter()) // Регистрируем адаптер
-            .create();
+    private static final ObjectMapper mapper = new ObjectMapper()
+            .registerModule(new JavaTimeModule()); // Поддержка Java 8+ типов данных
 
-    // Сохранение данных кошелька пользователя в файл
-    public static void saveWalletToFile(User user) {
+    // Сохранение данных пользователя в файл
+    public static void saveUserToFile(User user) {
         String fileName = user.getLogin() + FILE_EXTENSION;
-        try (Writer writer = new FileWriter(fileName)) {
-            Wallet wallet = user.getWallet();
-            String json = gson.toJson(wallet);
-            writer.write(json);
-            System.out.println("Данные кошелька сохранены в файл: " + fileName);
+        try {
+            mapper.writeValue(new File(fileName), user);
+            System.out.println("Данные пользователя сохранены в файл: " + fileName);
         } catch (IOException e) {
             System.out.println("Ошибка при сохранении данных: " + e.getMessage());
         }
     }
 
-    // Загрузка данных кошелька пользователя из файла
-    public static Wallet loadWalletFromFile(String login) {
-        String fileName = login + ".json";
-        try (Reader reader = new FileReader(fileName)) {
-            Wallet wallet = gson.fromJson(reader, Wallet.class);
-            System.out.println("Данные кошелька загружены из файла: " + fileName);
-            return wallet;
-        } catch (FileNotFoundException e) {
-            System.out.println("Файл с данными для пользователя " + login + " не найден.");
+    // Загрузка данных пользователя из файла
+    public static User loadUserFromFile(String login) {
+        String fileName = login + FILE_EXTENSION;
+        try {
+            User user = mapper.readValue(new File(fileName), User.class);
+            System.out.println("Данные пользователя загружены из файла: " + fileName);
+            return user;
         } catch (IOException e) {
             System.out.println("Ошибка при загрузке данных: " + e.getMessage());
+            return null; // Возвращаем null, если файл не найден или произошла ошибка
         }
-        return new Wallet(); // Возвращаем пустой кошелёк, если файл не найден
     }
 }
